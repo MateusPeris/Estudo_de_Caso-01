@@ -7,6 +7,7 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copia os arquivos do projeto para o diretório correto
 COPY index1.html /usr/share/nginx/html/index.html
 COPY script1.js /usr/share/nginx/html/script1.js
+COPY style.css /usr/share/nginx/html/style.css
 
 # Expõe a porta padrão do Nginx
 EXPOSE 80

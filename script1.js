@@ -93,3 +93,47 @@ const excluirAluno = (index) => {
   console.log("Excluído:", alunoRemovido.toString());
   renderizarTabela();
 };
+
+const divRelatorios = document.getElementById('relatorios');
+
+// Aprovados
+document.getElementById('btnAprovados').addEventListener('click', () => {
+const aprovados = alunos.filter(a => a.isAprovado());
+divRelatorios.innerHTML = `<strong>Aprovados:</strong><br>${aprovados.map(a => a.nome).join(', ') || 'Nenhum aluno'}`;
+});
+
+// Média das notas
+document.getElementById('btnMediaNotas').addEventListener('click', () => {
+if (alunos.length === 0) return divRelatorios.innerHTML = 'Nenhum aluno cadastrado.';
+const media = alunos.reduce((acc, a) => acc + a.notaFinal, 0) / alunos.length;
+divRelatorios.innerHTML = `<strong>Média das Notas:</strong> ${media.toFixed(2)}`;
+});
+
+// Média das idades
+document.getElementById('btnMediaIdades').addEventListener('click', () => {
+if (alunos.length === 0) return divRelatorios.innerHTML = 'Nenhum aluno cadastrado.';
+const media = alunos.reduce((acc, a) => acc + parseInt(a.idade), 0) / alunos.length;
+divRelatorios.innerHTML = `<strong>Média das Idades:</strong> ${media.toFixed(1)}`;
+});
+
+// Ordem alfabética
+document.getElementById('btnOrdemAlfabetica').addEventListener('click', () => {
+const nomes = alunos.map(a => a.nome).sort();
+divRelatorios.innerHTML = `<strong>Alunos em Ordem Alfabética:</strong><br>${nomes.join(', ') || 'Nenhum aluno'}`;
+});
+
+// Quantidade por curso
+document.getElementById('btnQtdPorCurso').addEventListener('click', () => {
+const contagem = {};
+alunos.forEach(a => {
+contagem[a.curso] = (contagem[a.curso] || 0) + 1;
+});
+
+let resultado = '<strong>Quantidade de Alunos por Curso:</strong><ul>';
+for (const curso in contagem) {
+resultado += `<li>${curso}: ${contagem[curso]}</li>`;
+}
+resultado += '</ul>';
+
+divRelatorios.innerHTML = resultado;
+});
