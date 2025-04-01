@@ -6,13 +6,9 @@ class Aluno {
     this.notaFinal = parseFloat(notaFinal);
   }
 
-  isAprovado() {
-    return this.notaFinal >= 7;
-  }
+  isAprovado = () => this.notaFinal >= 7;
 
-  toString() {
-    return `${this.nome} - ${this.curso} - Nota: ${this.notaFinal}`;
-  }
+  toString = () => `${this.nome} - ${this.curso} - Nota: ${this.notaFinal}`;
 }
 
 let alunos = [];
@@ -23,6 +19,7 @@ const tabela = document.getElementById('tabelaAlunos');
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
+  
   const nome = document.getElementById('nome').value;
   const idade = document.getElementById('idade').value;
   const curso = document.getElementById('curso').value;
@@ -32,8 +29,12 @@ form.addEventListener('submit', function (e) {
 
   if (editIndex === -1) {
     alunos.push(aluno);
+    alert("Aluno cadastrado com sucesso!");
+    console.log("Cadastrado:", aluno.toString());
   } else {
     alunos[editIndex] = aluno;
+    alert("Aluno editado com sucesso!");
+    console.log("Editado:", aluno.toString());
     editIndex = -1;
   }
 
@@ -41,7 +42,7 @@ form.addEventListener('submit', function (e) {
   renderizarTabela();
 });
 
-function renderizarTabela() {
+const renderizarTabela = () => {
   tabela.innerHTML = '';
   alunos.forEach((aluno, index) => {
     const linha = document.createElement('tr');
@@ -53,25 +54,42 @@ function renderizarTabela() {
       <td>${aluno.notaFinal}</td>
       <td>${aluno.isAprovado() ? 'Aprovado' : 'Reprovado'}</td>
       <td>
-        <button onclick="editarAluno(${index})">Editar</button>
-        <button onclick="excluirAluno(${index})">Excluir</button>
+        <button class="editar" data-index="${index}">Editar</button>
+        <button class="excluir" data-index="${index}">Excluir</button>
       </td>
     `;
 
     tabela.appendChild(linha);
   });
-}
 
-function editarAluno(index) {
+  document.querySelectorAll('.editar').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const index = this.getAttribute('data-index');
+      editarAluno(index);
+    });
+  });
+
+  document.querySelectorAll('.excluir').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const index = this.getAttribute('data-index');
+      excluirAluno(index);
+    });
+  });
+};
+
+const editarAluno = (index) => {
   const aluno = alunos[index];
   document.getElementById('nome').value = aluno.nome;
   document.getElementById('idade').value = aluno.idade;
   document.getElementById('curso').value = aluno.curso;
   document.getElementById('nota').value = aluno.notaFinal;
   editIndex = index;
-}
+};
 
-function excluirAluno(index) {
-  alunos.splice(index, 1);
+const excluirAluno = (index) => {
+  const alunoRemovido = alunos[index];
+  alunos = alunos.filter((_, i) => i != index);
+  alert("Aluno excluído com sucesso!");
+  console.log("Excluído:", alunoRemovido.toString());
   renderizarTabela();
-}
+};
