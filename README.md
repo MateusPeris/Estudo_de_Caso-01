@@ -86,7 +86,7 @@ Acesse no navegador: [http://localhost:8081](http://localhost:8081)
 
 2. Construa e execute o container com Docker.
 ```bash
-   docker build -t cadastro-alunos
+   docker build -t cadastro-alunos .
    docker run -p 8081:80 cadastro-alunos
    ```
 
